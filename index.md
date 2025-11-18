@@ -15,11 +15,10 @@ Aquí recopilo mis proyectos de:
 
 ---
 
-## 📝 Últimos posts
-
-{% raw %}{% for post in site.posts limit:5 %}
+## 📝 Últimos post
+{% for post in site.posts limit:5 %}
 - [{{ post.title }}]({{ post.url }}) — <small>{{ post.date | date: "%d-%m-%Y" }}</small>
-{% endfor %}{% endraw %}
+{% endfor %}
 
 ---
 

@@ -36,7 +36,7 @@ Aquí me planteé dos preguntas:
 La respuesta es **sí** a ambas.
 
 Puedes ver el código completo del proyecto en GitHub aquí:  
-[🔗 Repositorio del proyecto]([https://github.com/Gonzati/NOMBRE_DEL_REPO](https://github.com/Gonzati/prediccion_de_costas_pipeline_dataform)
+[🔗 Repositorio del proyecto](https://github.com/Gonzati/prediccion_de_costas_pipeline_dataform)
 
 ---
 

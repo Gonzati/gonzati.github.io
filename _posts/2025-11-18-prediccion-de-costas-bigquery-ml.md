@@ -1,55 +1,52 @@
 ---
 layout: post
-title: "Predicción de costas judiciales con BigQuery ML"
+title: "Predicción de costas judiciales con BigQuery ML y Dataform"
 date: 2025-11-18
 ---
-![Portada del artículo](/assets/images/portada-prediccion-costas.png)
-Uno de los principales problemas de la litigación masiva —y también de la no tan masiva— es **estimar con antelación las costas que pueden generarse si se pierde un procedimiento**. La dificultad se ha agudizado en los últimos años por el **abandono progresivo de los baremos tradicionales** utilizados en las tasaciones.
 
-En esta entrada explico cómo construí un **modelo de regresión en BigQuery ML**, cómo diseñé una **canalización incremental en Dataform**, y cómo generé un flujo completo que permite a un equipo de analistas **obtener predicciones actualizadas de manera automática**, usando solo SQL.
-
-Todas las piezas del proyecto están disponibles en este repositorio:  
-👉 https://github.com/Gonzati/prediccion_de_costas_pipeline_dataform
+> **TL;DR**: uso BigQuery ML para entrenar un modelo de regresión lineal que predice costas judiciales a partir de la cuantía, y Dataform para montar una canalización incremental 100% SQL que genera predicciones listas para explotar en Looker Studio.
 
 ---
 
-# 🔍 1. ¿Es posible predecir las costas judiciales?
+## 1️⃣ El problema: ¿cuánto me van a condenar en costas?
 
-La pregunta inicial fue doble:
+Uno de los principales problemas de la litigación masiva (y no tan masiva) es poder realizar una **previsión razonable de las costas** que se pueden generar en caso de perder un procedimiento.
 
-- **¿Es técnicamente posible predecir las costas?**  
-- **En caso afirmativo, ¿podemos sistematizar su predicción en un pipeline reproducible?**
+Este problema se agrava por el **abandono progresivo de los baremos** tradicionales que se utilizaban en las tasaciones.
 
-La respuesta corta es: **sí**.
+Aquí me planteé dos preguntas:
 
-Existe una **relación estadísticamente muy fuerte entre la cuantía reclamada y las costas generadas**. Esa correlación permite utilizar un **modelo de regresión lineal sencillo**, sin necesidad de recurrir a AutoML, para alcanzar una precisión más que razonable.
+- ¿Es técnicamente posible predecir las costas que se van a generar?
+- Y si es posible, ¿podemos **sistematizar** esa predicción en un pipeline reproducible?
 
-En esta demostración utilicé **datos sintéticos** (5.000 filas) generados únicamente para documentar el procedimiento.
+La respuesta es **sí** a ambas.
 
 ---
 
-# 📊 2. El dataset de origen
+## 2️⃣ Dataset utilizado
 
-El dataset consistía en un CSV con las siguientes columnas:
+Para este ejercicio he utilizado un CSV con datos **sintéticos** (5.000 filas) con estas columnas:
 
 - `CUANTIA`
 - `COSTAS`
 - `FECHA_SENTENCIA`
 - `FECHA_COBRO`
 
-Con estas variables es posible predecir:
+Con esto podemos estimar:
 
-1. **Cuánto** pagaremos de costas (modelo de regresión)
-2. **Cuándo** se producirá la tasación (aprox. 86 días tras la sentencia en la simulación)
+- **Cuánto** pagaremos de costas (`COSTAS`)
+- **Cuándo** se practicará la tasación (`FECHA_COBRO`)
 
-Tras subir el CSV al bucket de origen, creé un dataset en BigQuery llamado "Modelo_Costas", y la Tabla "Modelo_costas.datos"
+El CSV se carga en un bucket de Cloud Storage y desde ahí en una tabla de BigQuery:
 
+- Dataset: `Modelo_costas`
+- Tabla: `Modelo_costas.datos`
 
 ---
 
-# 🤖 3. Entrenamiento del modelo en BigQuery ML
+## 3️⃣ Entrenando el modelo en BigQuery ML
 
-No utilicé AutoML porque ya conocía la relación entre cuantía y costas. Opté por un enfoque transparente:
+Como ya conocía que la relación es básicamente lineal, en lugar de usar AutoML opté por un **modelo de regresión lineneal explícito** con BigQuery ML:
 
 ```sql
 CREATE OR REPLACE MODEL `Modelo_costas.modelo_costas_lr`
@@ -65,18 +62,27 @@ SELECT
   CUANTIA,
   COSTAS
 FROM `Modelo_costas.datos`;
+```
 
-El modelo se entrenó correctamente, mostrando unas métricas sólidas y coherentes con el comportamiento esperado en datos reales.
+Con esto BigQuery:
 
-Con esto ya teníamos un modelo funcional y evaluado, accesible desde SQL mediante ML.PREDICT.
+- Hace un **split 80/20** entrenamiento / evaluación  
+- Ajusta un modelo de regresión lineal clásico  
+- Calcula **p-values** para evaluar la significancia de las variables  
 
-🔧 4. Una canalización SQL-first para analistas: Dataform
+El resultado es un modelo con un ajuste muy razonable para un caso tan simple.
 
-Imaginemos que distintos analistas deben generar predicciones continuamente sobre nuevos casos. Para ellos, lo ideal es una herramienta donde pudieran construir transformaciones usando exclusivamente SQL.
+---
 
-La respuesta natural es Dataform.
+## 4️⃣ Canalización SQL-first con Dataform
 
-Construí un ejemplo de canalización incremental:
+Imaginemos ahora que las predicciones las van a consumir **analistas que se manejan muy bien con SQL**, pero no quieren entrar en Dataflow, Python, etc.
+
+Aquí entra en juego **Dataform**, que permite definir transformaciones y tablas derivadas únicamente con SQL.
+
+A modo de ejemplo, esta es la tabla incremental `predicciones_detalle`:
+
+```sql
 config {
   type: "incremental",
   name: "predicciones_detalle",
@@ -110,53 +116,46 @@ pred AS (
 )
 
 SELECT
-  CAST(FARM_FINGERPRINT(CONCAT(CAST(CUANTIA AS STRING), '|', CAST(FECHA_SENTENCIA AS STRING))) AS INT64) AS row_id,
+  CAST(
+    FARM_FINGERPRINT(
+      CONCAT(CAST(CUANTIA AS STRING), '|', CAST(FECHA_SENTENCIA AS STRING))
+    ) AS INT64
+  ) AS row_id,
   ROUND(CUANTIA, 2) AS CUANTIA,
   FECHA_SENTENCIA,
   DATE_ADD(FECHA_SENTENCIA, INTERVAL 86 DAY) AS FECHA_COBRO,
   ROUND(LEAST(50000.0, GREATEST(1.0, predicted_COSTAS)), 2) AS COSTAS_PREDICHAS
 FROM pred;
-Este script:
+```
 
-- Calcula predicciones con ML.PREDICT
+---
 
-- Genera un identificador único por fila
-
-- Calcula una fecha estimada de cobro
-
-- Limita valores extremos
-
-- Inserta solo nuevas filas mediante incremental
-
-📈 5. Visualización en Looker Studio
+## 5️⃣ Visualización en Looker Studio
 
 Una vez creada la tabla de predicciones en BigQuery, solo quedaba conectarla a Looker Studio.
 
-El resultado era un dashboard sencillo pero funcional, donde se podían analizar:
+El resultado es un dashboard sencillo pero funcional, donde se pueden analizar:
 
-Cuantías
-
-Fechas de sentencia
-
-Predicciones de costas
-
-Tendencias por mes de cobro
+- Cuantías  
+- Fechas de sentencia  
+- Predicciones de costas  
+- Tendencias por mes de cobro  
 
 Ideal para analistas acostumbrados a consumir datos de manera visual.
 
-🧩 6. Resultado: un pipeline end-to-end simple y eficaz
+---
+
+## 🧩 6. Resultado: un pipeline end-to-end simple y eficaz
 
 Con muy pocas herramientas:
 
-BigQuery ML
+- **BigQuery ML**  
+- **Dataform**  
+- **Looker Studio**
 
-Dataform
+…se puede construir una solución **automática y escalable** que permita predecir costes futuros de litigación y alimentar decisiones de negocio sin necesidad de herramientas externas ni Python.
 
-Looker Studio
-
-…se puede construir una solución automática y escalable que permita predecir costes futuros de litigación y alimentar decisiones de negocio sin necesidad de herramientas externas ni Python.
-
-El valor clave de este enfoque es que todo se ejecuta con SQL, lo que permite que equipos no familiarizados con frameworks complejos puedan operar, mantener y extender la solución.
+El valor clave de este enfoque es que **todo se ejecuta con SQL**, lo que permite que equipos no familiarizados con frameworks complejos puedan operar, mantener y extender la solución.
 
 En futuras entradas documentaré variantes del modelo, el uso de otras features y la integración con canalizaciones orquestadas mediante Composer.
-
+---

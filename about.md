@@ -5,9 +5,8 @@ title: "Sobre mí"
 
 # Sobre mí
 
-Soy abogado especializado en el sector financiero con experiencia en litigación bancaria.
-
-En paralelo, he desarrollado un perfil técnico centrado en:
+Abogado especializado en servicios financieros y Google Cloud Certified Professional Data Engineer, con amplia experiencia en automatización, análisis de datos y modelos predictivos aplicados al ámbito jurídico.
+He desarrollado un perfil técnico centrado en:
 
 - **Google Cloud (GCP)**: BigQuery, Dataflow, Data Fusion, Cloud Storage, Pub/Sub, Composer
 - **Automatización legal**: sistemas tipo "Excel Airflow", Access + VBA, orquestación de procesos
@@ -26,4 +25,4 @@ y experimentos en data engineering y LegalTech.
 ## Contacto
 
 - GitHub: [@Gonzati](https://github.com/Gonzati)
-- LinkedIn: www.linkedin.com/in/ángel-argibay-cabo-842504174
+- LinkedIn: [Ángel Argibay](www.linkedin.com/in/ángel-argibay-cabo-842504174)

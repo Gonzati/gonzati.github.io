@@ -25,4 +25,4 @@ y experimentos en data engineering y LegalTech.
 ## Contacto
 
 - GitHub: [@Gonzati](https://github.com/Gonzati)
-- LinkedIn: [Ángel Argibay](www.linkedin.com/in/angel-argibay-cabo-842504174)
+- LinkedIn: [Ángel Argibay](https://www.linkedin.com/in/angel-argibay-cabo-842504174)

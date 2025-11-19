@@ -3,6 +3,7 @@ layout: post
 title: "Predicción de costas judiciales con BigQuery ML y Dataform"
 date: 2025-11-18
 author: "Ángel Argibay"
+tags: [BigQuery, ML, SQL, LegalTech, Dataform, Costas]
 ---
 
 <p align="center">

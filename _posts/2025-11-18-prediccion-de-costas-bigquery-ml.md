@@ -83,7 +83,7 @@ FROM `Modelo_costas.datos`;
 
 El modelo generó métricas muy razonables para su simplicidad.
 <p align="center">
-  <img src="/assets/images/2025-11-18-metricas-modelo.png" width="500"/>
+  <img src="/assets/images/metricas-modelo.png" width="500"/>
 </p>
 
 

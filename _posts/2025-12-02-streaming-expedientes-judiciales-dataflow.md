@@ -167,4 +167,9 @@ Este pipeline puede ampliarse con:
 
 Este enfoque permitiría automatizar por completo el seguimiento de expedientes desde que se recibe la notificación hasta su análisis predictivo.
 
-➡️ Consulta el repositorio completo en GitHub para ver el código y la arquitectura.
+➡️ Consulta el repositorio completo en GitHub para ver el código y la arquitectura. [🔗 Repositorio del proyecto](https://github.com/Gonzati/gcp-expedientes-streaming)
+
+### Recursos adicionales
+
+[🔗 Simplify historical data tracking in BigQuery with Datastream's append-only CDC](https://cloud.google.com/blog/products/data-analytics/understanding-datastream-append-only-mode/)
+

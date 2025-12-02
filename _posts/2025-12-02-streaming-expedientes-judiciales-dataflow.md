@@ -30,6 +30,10 @@ En la entrada de hoy os traigo una canalización en Streaming que registra cambi
 
 Además, esta canalización tiene un gran potencial si la combinamos con las posibilidades que aporta **Vertex AI**.
 
+<p align="center">
+  <img src="/assets/images/diagramadataflow.png" width="500"/>
+</p>
+
 Puedes ver el código completo del proyecto en GitHub aquí:  
 [🔗 Repositorio del proyecto](https://github.com/Gonzati/gcp-expedientes-streaming)
 

@@ -176,4 +176,6 @@ Este enfoque permitiría automatizar por completo el seguimiento de expedientes 
 ### Recursos adicionales
 
 [🔗 Simplify historical data tracking in BigQuery with Datastream's append-only CDC](https://cloud.google.com/blog/products/data-analytics/understanding-datastream-append-only-mode/)
+[🔗 Precios de BigQuery](https://cloud.google.com/bigquery/pricing?hl=es)
+[🔗 Especificar columnas anidadas y repetidas en esquemas de tabla](https://docs.cloud.google.com/bigquery/docs/nested-repeated?hl=es)
 

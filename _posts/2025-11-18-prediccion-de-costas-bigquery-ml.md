@@ -169,4 +169,9 @@ El valor clave de este enfoque es que **todo se ejecuta con SQL**, permitiendo q
 
 Más adelante documentaré variantes del modelo, el uso de otras features y su integración con Composer.
 
+### Recursos adicionales
+
+[🔗 Información general sobre Dataform](https://docs.cloud.google.com/dataform/docs/overview?hl=es)
+[🔗 AutoML](https://docs.cloud.google.com/vertex-ai/docs/tabular-data/overview?hl=es)
+
 ---

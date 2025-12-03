@@ -278,3 +278,8 @@ Este ejercicio demuestra:
 - Exploración analítica en **BigQuery + Looker Studio**
 
 Una arquitectura elegante, modular y ampliable que permite analizar resoluciones judiciales a escala combinando IA y procesamiento distribuido.
+
+### Recursos adicionales
+
+[🔗 Activar DAGs con Cloud Functions y mensajes de Pub/Sub](https://docs.cloud.google.com/composer/docs/composer-3/triggering-gcf-pubsub?hl=es)
+[🔗 Escribir DAGs de Airflow](https://docs.cloud.google.com/composer/docs/composer-3/write-dags?hl=es)

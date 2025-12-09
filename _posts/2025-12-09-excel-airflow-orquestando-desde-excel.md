@@ -26,7 +26,7 @@ tags: [Excel, VBA, Data Engineering, ETL, Orquestación, LegalTech]
 
 # 🧩 Introducción
 
-Durante años he trabajado en un entorno corporativo donde las restricciones técnicas impedían utilizar herramientas habituales en data engineering como Python, Airflow, Power Automate o servidores propios.
+En muchos entornos corporativos no se pueden instalar herramientas externas como Python, Power Automate o Airflow. Aun así, las necesidades siguen estando ahí: automatizar procesos, coordinar tareas entre Access, Word y Excel, ejecutar pipelines diarios y mantener trazabilidad.
 
 La necesidad, sin embargo, seguía existiendo:
 

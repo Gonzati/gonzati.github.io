@@ -169,7 +169,7 @@ End Sub
 ```
 
 Puedes ver la versión completa en:  
-➡ **/DAGS/LimpiarYCargarFuentesAB.bas**
+➡ [🔗 DAG de ejemplo](https://github.com/Gonzati/excel_airflow/blob/main/DAGS/EjemploDAG.bas)
 
 ---
 

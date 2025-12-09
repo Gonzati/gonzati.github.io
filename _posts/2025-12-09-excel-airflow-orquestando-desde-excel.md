@@ -194,7 +194,6 @@ Excel Airflow nació como una solución casera a un problema real:
 **cómo automatizar y orquestar procesos de datos cuando no puedes instalar nada**.
 
 Hoy se ha convertido en uno de los proyectos que más orgulloso me hacen sentir, no solo por su utilidad práctica, sino porque ha acabado siendo un ejercicio de ingeniería artesanal, estable, mantenible y totalmente portable.
-Es una solución mucho más potente de lo que a simple vista pueda parecer. Podemos utilizar SQL en access, y hay módulos que permiten parsear archivos JSON, por lo que prácticamente podemos hacer cualquier tarea en batch.
 
 Si trabajas en un entorno con restricciones, o simplemente te interesa entender cómo funciona un orquestador desde dentro, te animo a explorar el repositorio:
 

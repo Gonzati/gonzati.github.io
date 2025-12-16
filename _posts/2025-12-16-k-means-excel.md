@@ -97,17 +97,18 @@ Esta métrica es conocida como **SSE (Sum of Squared Errors)** y será clave má
 
 Dicho formalmente, el algoritmo busca minimizar la siguiente expresión:
 
-SSE = Σᵢ Σₓ∈Cᵢ || x − μᵢ ||²
+SSE = sum_{i=1..K} sum_{x in C_i} (x - μ_i)^2
 
 donde:
 
-- **K** es el número de clusters
-- **Cᵢ** es el conjunto de puntos asignados al cluster *i*
-- **x** es una observación
-- **μᵢ** es el centroide (media) del cluster *i*
-- **|| x − μᵢ ||²** es la distancia euclídea al cuadrado
+- **K** es el número de clusters  
+- **C_i** es el conjunto de puntos asignados al cluster *i*  
+- **x** es una observación  
+- **μ_i** es el centroide (media) del cluster *i*  
+- **(x - μ_i)^2** es la distancia euclídea al cuadrado  
 
-Esta magnitud, conocida como **SSE (Sum of Squared Errors)**, es la que se representa en la técnica del codo para justificar el número óptimo de clusters.
+Esta magnitud es la que se representa en la técnica del codo para justificar el número óptimo de clusters.
+
 ---
 
 # 🔍 ¿Qué problema resolvemos?
